@@ -112,3 +112,8 @@ cy.get('input').type('Hello, World'); // Type 'Hello, World' into the 'input'
 cy.type('Welcome'); // Errors, cannot be chained off 'cy' 
 cy.clock().type('www.cypress.io'); // Errors, 'clocks' does not yield DOM elements 
 ```
+
+
+
+div 안에 a 태그:  Closing Tags
+
