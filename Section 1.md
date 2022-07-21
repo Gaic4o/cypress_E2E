@@ -43,3 +43,72 @@ V6, V7, V8, V9, V10 ....
 우린 버전 8을 사용하니까 버전 8을 설치 해주어야 합니다.
 npm install --save-dev cypress@8.4.1 
 
+cypress - 설치하면 여러가지 모듈이 설치됩니다.
+Cypress 는 테스트를 대화식으로 실행하므로, 테스트 중인 응용 프로그램 또는 구성 요소를 보고 해당 DOM 탐색하면서 실행되는 명령을 볼 수 있습니다.
+
+설치하면 폴더 구조는 이런 식으로 형성되어 있습니다.
+
+cypress 
+
+fixtures 
+integration
+plugins 
+support
+
+
+cypress.json - 기본 설정을 변경하기 위해 존재합니다.
+
+- pageLoadTimeout, viewportHeight, viewportWidth ... 등이 있습니다.
+
+support 폴더에는 2가지가 있습니다.
+
+- commands.js, index.js 
+
+index.js 에서는 추가 라이브러리, 이벤트 리스너 등을 추가할 수 있습니다. 
+commands.js 에서는 일반적인 명령을 수용하는 데 사용 됩니다.
+
+
+
+plugins 에는 index.js 가 있습니다.
+index.js 에는 cypress 기능을 확장하는 기능을 추가 할 수 있습니다. 
+
+Mocha 에서는 describe() 및 it() 2가지 함수를 호출 과 함께 사전 번들로 제공됩니다.
+describe() 2개 인수 - 테스트 그룹의 이름, 콜백함수.
+it() - 개별 테스트 케이스를 정의하는 데 사용 합니다.
+
+먼저 할 일 .
+
+1. exmaples - intergration 제거.
+
+
+<reference types="Cypress" /> 이것을 입력 해주어야 vscode 검색어에 문법이 뜸.
+
+node_modules/.bin/cypress open 테스트 실행.
+
+click 은 DOM 요소를 클릭합니다.
+
+``` javascript
+cy.get('.btn').click() // click button
+cy.focused().click() // click on el with focus 
+cy.contains('Welcome').click() // click on first el containing 'Welcome'
+
+cy.click('btn') // Errors, cannot be chained off 'cy'
+cy.window().click() // Errors, 'window' does not yield DOM element 
+```
+
+
+
+
+2. type 은 DOM Element 를 가리킵니다.
+
+``` javascript
+.type(text)
+.type(text, options) 
+```
+
+``` javascript
+// Correct Usage 
+cy.get('input').type('Hello, World'); // Type 'Hello, World' into the 'input'
+cy.type('Welcome'); // Errors, cannot be chained off 'cy' 
+cy.clock().type('www.cypress.io'); // Errors, 'clocks' does not yield DOM elements 
+```
