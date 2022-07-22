@@ -117,3 +117,109 @@ cy.clock().type('www.cypress.io'); // Errors, 'clocks' does not yield DOM elemen
 
 div 안에 a 태그:  Closing Tags
 
+./node_modules/.bin/cypress run 을 통해 터미널에서 테스트를 할 수 있습니다.
+./node_modules/.bin/cypress open 을 통해 cypress 툴로 테스트를 진행 할 수 있습니다.
+./node_modules/.bin/cypress run --headed 툴을 바로 켜주고 바로 툴에서 테스트를 진행 합니다.
+./node_modules/.bin/cypress run --browser chrome Chrome 브라우저에서 터미널 테스트. 
+./node_modules/.bin/cypress run --spec cypress/integration/webdriver-uni/contact-us.js
+./node_modules/.bin/cypress run --spec cypress/integration/webdriver-uni/*
+
+
+Cypress 명령은 비동기식이며, Cypress 는 Node.js 를 기반으로 하므로, 왜 이전 강의에서 npm 을 설정하고 사용했습니다.
+비동기는 동시 또는 다중 스레드와 같은 의미가 아닙니다.
+
+Javascript 는 비동기 코드를 가질 수 있지만, 일반적으로 단일 스레드 입니다.
+
+
+
+
+
+
+Variables and Aliases 
+
+- 비동기 명령을 처리하는 방법.
+- 별칭이란? 코드를 단순화하는 방법.
+- Cypress 에서 변수를 거의 사용할 필요가 없는 이유.
+- 개체, 요소 및 경로에 대한 별칭을 사용하는 방법.
+
+
+Closures 
+
+``` javascript
+cy.get('button').then(($btn) => {
+    // $btn is the object that the previous 
+    // command yielded us 
+})
+```
+
+``` javascript
+cy.get('button').then(($btn) => {
+    
+    // store the button`s text 
+    const txt = $btn.text()
+
+    // submit a form 
+    cy.get('form').submit()
+
+    // compare the two buttons` text 
+    // and make sure they are different
+    cy.get('button').should(($btn2) => {
+        expect($btn2.text()).not.to.eq(txt)
+    })
+})
+
+// these commands run after of the
+// other previous commands have finished 
+cy.get(...).find(...).should(...)
+```
+
+then 이 끝날 떄 까지 외부 명령은 실행 되지 안흣ㅂ니다.
+
+
+
+Debugging 
+
+함수를 사용 .then() 하는 것은 절호의 기호 debugger 입니다.
+이것이 -- `명령이 실행되는 순서를 이해하는 데 도움`
+
+``` javascript
+cy.get('button').then(($btn) => {
+    debugger 
+    
+    cy.get('[data-testid="countries"]')
+    .select('USA')
+    .then(($select) => {
+        debugger 
+
+        cy.clock().then(($clock) => {
+            debugger 
+
+            $btn
+            $select 
+        })
+    })
+})
+```
+
+
+
+
+
+Catalog of Events 
+
+- Cypress 는 브라우저에서 실행될 떄 이벤트를 보냅니다, 이벤트는 애플리케이션의 동작을 제어할 뿐만 아니라 디버깅 목적에도 유용합니다.
+
+uncaught exceptions Cypress 가 테스트에 실패하는 지 듣고 방지.
+alert 하거나 confirm 걸어 confirm 행동을 변경하십시오.
+페이지 전환 사이 앱 코드가 실행되기 전 window:before:load event 를 수신하고 수정합니다.
+command:retry Cypress 가 디버깅 목적으로 내부적으로 재시도하는 이유를 이해하기 위해 이벤트를 수신합니다.
+
+uncaught:exception -> 오류(Object) (애플리케이션에서 포착되지 않은 예외가 발생할 떄 발생합니다.)
+window:confirm -> 앱이 전역 (window.confirm()) 메서드를 호출할 떄 발생합니다.
+window.alert -> 앱이 전역 (window.alert()) 메서드를 호출할 떄 발생합니다.
+window:before:load -> 페이지 로드가 시작될 떄 실행되지만, 애플리케이션 Javascript 실행되기 전 실행됩니다. 
+window:load -> 페이지 전환 후 모든 리소스 로드가 완료된 후 실행됩니다.
+window:before:unload -> 애플리케이션이 이동하려고 할 떄 발생합니다.
+window.unload -> 애플리케이션이 언로드되고 탐색 중일 떄 발생합니다.
+url:changed -> Cypress 가 애플리케이션의 URL 이 변경되었음을 감지할 떄 마다 실행됩니다.
+
