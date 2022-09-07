@@ -1,6 +1,13 @@
 /// <reference types="Cypress" />
 
 describe("Test Contact Us form via WebdriverUni", () => {
+    before(function() {
+        cy.fixture('example').then(function(data) {
+            // this.data = data;
+            globalThis.data = data;
+        })
+    })
+
     it("Should be able to submit a successful submission via contact us form", () => {
         //cypress code 
         cy.visit("http://www.webdriveruniversity.com");
@@ -9,9 +16,9 @@ describe("Test Contact Us form via WebdriverUni", () => {
         cy.title().should('include', 'WebDriver | Contact Us');
         cy.url().should('include', 'contactus'); 
         // cy.get('#contact-us > .thumbnail').click({ force: true })
-        cy.get('[name="first_name"]').type('Joe'); // 자동으로 first_name input 에 type 을 이용하여 Joe 를 입력 해 줍니다.
-        cy.get('[name="last_name"]').type("blogs");
-        cy.get('[name="email"]').type("joe_blogs123@gmail.com");
+        cy.get('[name="first_name"]').type(data.first_name); // 자동으로 first_name input 에 type 을 이용하여 Joe 를 입력 해 줍니다.
+        cy.get('[name="last_name"]').type(data.last_name);
+        cy.get('[name="email"]').type(data.email);
         cy.get('textarea.feedback-input').type("How can I learn Cypress?");
         cy.get('[type="submit"]').click();
         cy.get('h1').should('have.text', 'Thank You for your Message!');
@@ -23,8 +30,8 @@ describe("Test Contact Us form via WebdriverUni", () => {
         cy.visit("http://www.webdriveruniversity.com")
         cy.get("#contact-us").invoke('removeAttr', 'target').click({force: true})
         // cy.get("#contact-us").click({force: true})
-        cy.get('[name="first_name"]').type('Tom'); // 자동으로 first_name input 에 type 을 이용하여 Joe 를 입력 해 줍니다.
-        cy.get('[name="last_name"]').type("blogs");
+        cy.get('[name="first_name"]').type(data.first_name); // 자동으로 first_name input 에 type 을 이용하여 Joe 를 입력 해 줍니다.
+        cy.get('[name="last_name"]').type(data.last_name);
         cy.get('textarea.feedback-input').type("How can I learn Cypress?");
         cy.get('[type="submit"]').click();
         cy.get('body').contains('Error: all fields are required'); // Error 메시지는 html 태그가 아닌 그냥 body 안에 에러 메시지가 출력되어 나오는 듯.
