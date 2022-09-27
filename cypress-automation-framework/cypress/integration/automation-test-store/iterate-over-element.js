@@ -7,21 +7,21 @@ describe("Iterate over elements", () => {
         cy.get("a[href*='product/category&path=']").contains("Hair Care").click();
 
         // 각 제품을 반복하기.
-        cy.get(".fixed_wrapper .prdocutname").each(($el, index, $list) => {
-            cy.log("Index: " + index + " : " + $el.text())
-        });
+        // cy.get(".fixed_wrapper .prdocutname").each(($el, index, $list) => {
+        //     cy.log("Index: " + index + " : " + $el.text())
+        // });
+        cy.selectProduct('Curls to straight Shampoo');
     });
 
-    it("Add specific product to basket", () => {
-        cy.visit('https://automationteststore.com/index.php?rt=content/contact');
+    it("Add another specific product to basket", () => {
+        cy.visit('https://automationteststore.com/');
         cy.get("a[href*='product/category&path=']").contains("Hair Care").click(); // 자동화 테스트 저장소, 헤더 탐색에서 여러 링크를 찾을 수 있습니다.
+        cy.selectProduct('Curls to straight Shampoo');
+    }); 
 
-        cy.get(".fixed_wrapper .prdocutname").each(($el, index, $list) => {
-            if($el.text().includes('Curls to straight Shampoo')) { // text 에 타이틀이 샴푸라면? 
-                cy.wrap($el).click(); // click DOM 을 실행합니다.
-            }
-        });
-
-        
-    })
+    it("Add another spectific product to basket", () => {
+        cy.visit("https://automationteststore.com/");
+        cy.get("a[href*='product/category&path=']").contains("Hair Care").click(); 
+        cy.selectProduct('Seaweed Conditioner');
+    });
 });
